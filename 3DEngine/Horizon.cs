@@ -6,15 +6,14 @@ using System.Threading.Tasks;
 
 namespace Engine3D
 {
-    class Horizon
+    static class Horizon
     {
-        public double X1 { get; set; }
-        public double X2 { get; set; }
-        public double Y { get; set; }
-        public double Z { get; private set; }
-        public Point3D VanishingPoint { get; private set; }
-        public Horizon(double x1, double x2, double y, double z)
-        {
+        static public double X1 { get; set; }
+        static public double X2 { get; set; }
+        static public double Y { get; set; }
+        static public double Z { get; private set; }
+        static public Point3D VanishingPoint { get; private set; }
+        static public void SetHorizon(double x1, double x2, double y, double z) {
             X1 = x1;
             X2 = x2;
             Y = y;

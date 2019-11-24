@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace Engine3D
 {
-    class _3DObject
+    class EventHandlers
     {
+
     }
 }

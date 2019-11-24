@@ -12,36 +12,52 @@ namespace Engine3D
 {
     class Face
     {
-        private List<Point3D> Corners;
+        private List<Point3D> cornersActual;
+        public List<Point3D> CornersScaled { get; private set; }
         public Polygon Polygon { get; private set; }
 
-        public Face(params Point3D[] corners)
-        {
-            if(corners.Length < 3)
-            {
-                throw new ArgumentException("Error in " + ToString() + " not enough corner. There must be atleast 3 corners");
+
+        public void ScalePolygon() {
+            for(int i = 0; i < cornersActual.Count; i++) {
+                Point3D point = cornersActual[i];
+                
+                double zSpan = Horizon.VanishingPoint.Z - point.Z;
+                double xPerZ = zSpan / (Horizon.VanishingPoint.X - point.X);
+                double yPerZ = zSpan / (Horizon.VanishingPoint.Y - point.Y);
+
+                double xScaled = xPerZ * point.Z;
+                double yScaled = yPerZ * point.Z;
+
+                if(xScaled != CornersScaled[i].X || yScaled != CornersScaled[i].Y) {
+                    CornersScaled[i] = new Point3D(xScaled, yScaled, point.Z);
+                }
             }
-            else
-            {
-                Corners = new List<Point3D>(corners);
+        }
+
+        public Face(params Point3D[] corners) {
+            if(corners.Length < 3) {
+                throw new ArgumentException("Error in " + ToString() + " not enough corners. There must be at least 3 corners");
+            } else {
+                Polygon = new Polygon() {
+                    StrokeThickness = 3,
+                    Stroke = new SolidColorBrush(Colors.Black)
+                };
+                cornersActual = corners.ToList();
+                CornersScaled = new List<Point3D>();
+                foreach(Point3D corner in this.cornersActual) {
+                    CornersScaled.Add((Point3D)corner.Clone());
+                }
             }
             GeneratePolygon();
         }
-        private void GeneratePolygon()
-        {
-            Polygon = new Polygon
-            {
-                Points = new PointCollection(new Func<IEnumerable<Point>>(() => {
-                    var pc = new List<Point>();
-                    foreach (Point3D corner in Corners)
-                    {
-                        pc.Add(new Point(corner.X, corner.Y));
-                    }
-                    return pc;
-                }).Invoke()),
-                Stroke = new SolidColorBrush(Colors.Black),
-                StrokeThickness = 3
-            };
+        private void GeneratePolygon() {
+            Polygon.Points = new PointCollection(new Func<IEnumerable<Point>>(() => {
+                var pc = new List<Point>();
+                foreach(Point3D corner in cornersActual) {
+                    pc.Add(new Point(corner.X, corner.Y));
+                }
+                return pc;
+            }).Invoke());
         }
     }
 }

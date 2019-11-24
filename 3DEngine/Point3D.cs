@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Engine3D
 {
-    class Point3D
+    class Point3D : ICloneable
     {
         public Point3D() : this(0, 0, 0)
         {
@@ -22,5 +22,9 @@ namespace Engine3D
         public double X { get; set; }
         public double Y { get; set; }
         public double Z { get; set; }
+
+        public object Clone() {
+            return MemberwiseClone();
+        }
     }
 }

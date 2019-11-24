@@ -55,6 +55,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="CList.cs" />
+    <Compile Include="EventHandlers.cs" />
     <Compile Include="Face.cs" />
     <Compile Include="Shape3D.cs" />
     <Page Include="MainWindow.xaml">
